@@ -107,7 +107,3 @@ Open `dashboard/index.html` in your browser.
 - Python 3.12+
 - Arista cEOS image imported as `ceos:latest`
 - Python packages: flask, flask-cors, requests, netmiko
-
-## Author
-
-Biloliddin Turaev

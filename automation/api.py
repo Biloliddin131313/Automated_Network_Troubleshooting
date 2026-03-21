@@ -75,11 +75,14 @@ MATTERMOST_WEBHOOK = os.environ.get("MATTERMOST_WEBHOOK", "http://localhost:8065
 
 
 def is_demo_mode():
-    result = subprocess.run(
-        ["docker", "inspect", "clab-ant-lab-router1"],
-        capture_output=True, text=True
-    )
-    return result.returncode != 0
+    try:
+        result = subprocess.run(
+            ["docker", "inspect", "clab-ant-lab-router1"],
+            capture_output=True, text=True
+        )
+        return result.returncode != 0
+    except FileNotFoundError:
+        return True
 
 
 def notify_mattermost(message, colour="#4a9a6a"):

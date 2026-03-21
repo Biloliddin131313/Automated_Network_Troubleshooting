@@ -4,6 +4,13 @@ A full network automation system that monitors virtual routers, detects faults a
 
 Built as part of COM617 Industrial Consulting Project at Southampton Solent University, 2025/26.
 
+## Live demo
+
+| | URL |
+|---|---|
+| ARGUS dashboard | https://biloliddin131313.github.io/Automated_Network_Troubleshooting/ |
+| REST API | https://web-production-4de00.up.railway.app |
+
 ## What it does
 
 When a network fault occurs, the system automatically:

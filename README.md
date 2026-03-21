@@ -104,4 +104,6 @@ Open `dashboard/index.html` in your browser.
 
 ## Author
 
-Biloliddin Turaev
+Biloliddin Turaev  
+BSc Cyber Security Management, Southampton Solent University  
+GitHub: Biloliddin131313

@@ -2,7 +2,6 @@
 
 A full network automation system that monitors virtual routers, detects faults automatically, runs diagnostic commands and delivers reports to engineers in real time.
 
-Built as part of COM617 Industrial Consulting Project at Southampton Solent University, 2025/26.
 
 ## Live demo
 
@@ -111,6 +110,4 @@ Open `dashboard/index.html` in your browser.
 
 ## Author
 
-Biloliddin Turaev  
-BSc Cyber Security Management, Southampton Solent University  
-GitHub: Biloliddin131313
+Biloliddin Turaev

@@ -8,7 +8,7 @@ Built as part of COM617 Industrial Consulting Project at Southampton Solent Univ
 
 | | URL |
 |---|---|
-| ARGUS dashboard | https://biloliddin131313.github.io/Automated_Network_Troubleshooting/ |
+| ARGUS dashboard | https://biloliddin131313.github.io/argus/ |
 | REST API | https://web-production-4de00.up.railway.app |
 
 ## What it does

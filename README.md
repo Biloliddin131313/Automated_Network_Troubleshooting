@@ -1,51 +1,57 @@
-# Automated Network Troubleshooting(Argus)
+# Automated Network Troubleshooting (ARGUS)
 
-A full network automation system that monitors virtual routers, detects faults automatically, runs diagnostic commands
- and delivers reports to engineers in real time.
+ARGUS is a network automation system that watches your infrastructure around the clock. When something breaks, it automatically figures out what happened, runs the right diagnostics, and delivers a full report to your engineers — no one needs to be staring at a screen waiting for alerts.
+
+Built for COM617 Industrial Consulting Project at Southampton Solent University, 2025/26.
 
 ---
 
 ## Live Demo
 
-- ARGUS Dashboard: https://biloliddin131313.github.io/argus/  
-- REST API: https://web-production-4de00.up.railway.app  
+Try it right now — no setup needed:
+
+- **ARGUS Dashboard:** https://biloliddin131313.github.io/argus/
+- **REST API:** https://web-production-4de00.up.railway.app/api/status
 
 ---
 
-## Overview
+## How it works
 
-The system continuously monitors network activity and responds to faults automatically.
+A fault happens on the network. Within seconds:
 
-When a fault occurs, it:
+1. The router fires an SNMP trap to OpenNMS
+2. OpenNMS logs the alarm
+3. The runbook engine detects it and identifies the fault type
+4. Diagnostic commands run automatically on the affected router
+5. A full report lands in Mattermost
+6. Grafana updates to show what went down
 
-- Detects events via SNMP traps and syslog  
-- Identifies the fault type  
-- Executes diagnostic commands on affected devices  
-- Sends alerts to engineers  
-- Logs activity for analysis and review  
+Engineers get everything they need without touching a keyboard.
 
 ---
 
 ## Architecture
 
-- Network Layer – Virtual routers generating traffic and faults  
-- Monitoring Layer – Event collection and metric tracking  
-- Automation Layer – API and diagnostic execution  
-- Visualisation Layer – Dashboards and reporting  
+The system is built in four layers, each with a clear job:
+
+- **Network layer** — Three virtual Arista cEOS routers running BGP, generating real SNMP traps when faults occur
+- **Monitoring layer** — OpenNMS receives traps, Prometheus collects metrics every 30 seconds
+- **Automation layer** — Python runbook engine polls for alarms and executes diagnostics automatically
+- **Visualisation layer** — ARGUS dashboard and Grafana panels show everything in real time
 
 ---
 
 ## Technology Stack
 
 | Component | Tool |
-|----------|------|
-| Virtual Network | ContainerLab, Arista cEOS |
-| Monitoring | OpenNMS |
-| Metrics | Prometheus |
-| Automation | Python (Flask) |
+|---|---|
+| Virtual network | ContainerLab + Arista cEOS |
+| Alert monitoring | OpenNMS |
+| Metrics collection | Prometheus |
+| Automation engine | Python + Flask |
 | Notifications | Mattermost |
 | Dashboards | Grafana |
-| Interface | ARGUS |
+| Analyst interface | ARGUS |
 
 ---
 
@@ -54,7 +60,6 @@ When a fault occurs, it:
 | ARGUS | Grafana |
 |------|--------|
 | ![](docs/images/argus.png) | ![](docs/images/grafana_interface.png) |
-
 | BGP Monitoring | Alerts | Network Monitoring |
 |---------------|--------|-------------------|
 | ![](docs/images/grafana_bgp.png) | ![](docs/images/mattermost.png) | ![](docs/images/opennms.png) |
@@ -63,58 +68,76 @@ When a fault occurs, it:
 
 ## Project Structure
 
-containerlab/        Network topology and configurations  
-automation/          API and diagnostic logic  
-dashboard/           ARGUS interface  
-monitoring/          Monitoring stack (Docker)  
-docs/images/         Project screenshots  
+\`\`\`
+containerlab/        Virtual network topology and router configs
+automation/          REST API, runbook engine and Prometheus exporter
+dashboard/           ARGUS analyst web interface
+monitoring/          Docker Compose stack for all services
+docs/images/         Project screenshots
+\`\`\`
 
 ---
 
 ## Setup
 
-cd containerlab  
-sudo containerlab deploy -t lab.yml  
+Make sure Docker and ContainerLab are installed, then run:
 
-cd ../monitoring  
-docker compose up -d  
+\`\`\`bash
+cd containerlab
+sudo containerlab deploy -t lab.yml
+cd ../monitoring
+docker compose up -d
+python3 ../automation/api.py &
+python3 ../automation/exporter.py &
+\`\`\`
 
-python3 ../automation/api.py  
+Or use the startup script to do everything at once:
 
-Open: dashboard/index.html
+\`\`\`bash
+bash start.sh
+\`\`\`
+
+Then open dashboard/index.html in your browser.
 
 ---
 
 ## API Endpoints
 
 | Method | Endpoint | Description |
-|-------|--------|------------|
-| GET | /api/status | System status |
-| GET | /api/routers | List routers |
-| GET | /api/faults | Fault logs |
-| POST | /api/fault/trigger | Trigger fault |
-| POST | /api/fault/restore | Restore fault |
-| POST | /api/diagnostic/run | Run diagnostics |
+|---|---|---|
+| GET | /api/status | System health check |
+| GET | /api/routers | List all routers |
+| GET | /api/faults | Fault scenarios and recent log |
+| POST | /api/fault/trigger | Trigger a fault |
+| POST | /api/fault/restore | Restore a fault |
+| POST | /api/diagnostic/run | Run diagnostic commands |
+| GET | /api/runbooks | List all runbooks |
 
 ---
 
 ## Fault Scenarios
 
-- Interface failure  
-- BGP neighbour changes  
-- Hardware faults  
-- Route flapping  
+The system handles four fault types out of the box:
+
+- **Interface down** — detects and diagnoses a link failure on router2
+- **BGP neighbourship change** — handles a BGP session drop on router1
+- **Hardware fault** — responds to an error-disabled interface on router3
+- **Route flap** — detects route withdrawal instability on router3
 
 ---
 
 ## Requirements
 
-- Docker & Docker Compose  
-- ContainerLab  
-- Python 3.12+  
+- Docker and Docker Compose
+- ContainerLab 0.73+
+- Python 3.12+
+- Arista cEOS image imported as ceos:latest
+- Python packages: flask, flask-cors, requests, netmiko, prometheus-client
 
-Python packages:
-- flask  
-- flask-cors  
-- requests  
-- netmiko  
+---
+
+## Author
+
+Biloliddin Turaev
+BSc Cyber Security Management, Southampton Solent University
+GitHub: https://github.com/Biloliddin131313

@@ -65,32 +65,12 @@ The system is built in four layers, each with a clear job:
 ---
 
 ## Project Structure
-
-\`\`\`
-containerlab/        Virtual network topology and router configs
-automation/          REST API, runbook engine and Prometheus exporter
-dashboard/           ARGUS analyst web interface
-monitoring/          Docker Compose stack for all services
-docs/images/         Project screenshots
-\`\`\`
-
----
-
-## Setup
-
-Make sure Docker and ContainerLab are installed. Then either run each step manually:
-```bash
-# Deploy the virtual network
-cd containerlab
-sudo containerlab deploy -t lab.yml
-
-# Start the monitoring stack
-cd ../monitoring
-docker compose up -d
-
-# Start the API and exporter
-python3 ../automation/api.py &
-python3 ../automation/exporter.py &
+```
+containerlab/        Virtual topology, router configs, and lab orchestration
+automation/          REST API, runbook engine, Prometheus exporter, and workflow automation
+dashboard/           ARGUS analyst UI with alert triage and enrichment
+monitoring/          Full Docker Compose stack (Prometheus, Grafana, Alertmanager)
+docs/images/         Project screenshots and architecture diagrams
 ```
 
 Or use the startup script which does everything automatically:

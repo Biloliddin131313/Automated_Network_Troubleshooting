@@ -1,109 +1,119 @@
 # Automated Network Troubleshooting
 
-A full network automation system that monitors virtual routers, detects faults automatically, runs diagnostic commands and delivers reports to engineers in real time.
+An automated system for detecting network faults, executing diagnostics, and delivering real-time reports to engineers.
 
+---
 
-## Live demo
+## Live Demo
 
-| | URL |
-|---|---|
-| ARGUS dashboard | https://biloliddin131313.github.io/argus/ |
-| REST API | https://web-production-4de00.up.railway.app |
+- ARGUS Dashboard: https://biloliddin131313.github.io/argus/  
+- REST API: https://web-production-4de00.up.railway.app  
 
-## What it does
+---
 
-When a network fault occurs, the system automatically:
+## Overview
 
-1. Detects the fault via SNMP traps or syslog
-2. Classifies what type of fault it is
-3. Runs the appropriate diagnostic commands on the affected router
-4. Sends a notification to the engineer via Mattermost
-5. Logs everything for review in the ARGUS dashboard
+The system continuously monitors network activity and responds to faults automatically.
 
-No human intervention needed between fault detection and diagnostic report delivery.
+When a fault occurs, it:
 
-## Stack
+- Detects events via SNMP traps and syslog  
+- Identifies the fault type  
+- Executes diagnostic commands on affected devices  
+- Sends alerts to engineers  
+- Logs activity for analysis and review  
 
-| Component | Tool | Purpose |
-|---|---|---|
-| Virtual network | ContainerLab + Arista cEOS | 3 routers running BGP, generating real SNMP traps |
-| Alert monitoring | OpenNMS | Receives SNMP traps and syslog, correlates events |
-| Metrics | Prometheus | Collects ongoing network metrics |
-| Automation engine | Python + Flask | REST API that executes runbooks and diagnostics |
-| Notifications | Mattermost | Delivers fault alerts to engineers |
-| Dashboards | Grafana | Visual network health charts |
-| Analyst UI | ARGUS | Custom web dashboard for triggering and monitoring faults |
+---
 
-## Project structure
+## Architecture
 
-```
-containerlab/        Virtual network topology and router configs
-automation/          REST API, runbook engine and diagnostic scripts  
-dashboard/           ARGUS analyst web dashboard
-monitoring/          Docker Compose stack for all monitoring services
-```
+- Network Layer – Virtual routers generating traffic and faults  
+- Monitoring Layer – Event collection and metric tracking  
+- Automation Layer – API and diagnostic execution  
+- Visualisation Layer – Dashboards and reporting  
 
-## Quick start
+---
 
-### 1. Deploy the virtual network
+## Technology Stack
 
-```bash
-cd containerlab
-sudo containerlab deploy -t lab.yml
-```
+| Component | Tool |
+|----------|------|
+| Virtual Network | ContainerLab, Arista cEOS |
+| Monitoring | OpenNMS |
+| Metrics | Prometheus |
+| Automation | Python (Flask) |
+| Notifications | Mattermost |
+| Dashboards | Grafana |
+| Interface | ARGUS |
 
-### 2. Start the monitoring stack
+---
 
-```bash
-cd monitoring
-docker compose up -d
-```
+## Dashboards
 
-### 3. Start the REST API
+| ARGUS | Grafana |
+|------|--------|
+| ![](docs/images/argus.png) | ![](docs/images/grafana_interface.png) |
 
-```bash
-python3 automation/api.py
-```
+| BGP Monitoring | Alerts | Network Monitoring |
+|---------------|--------|-------------------|
+| ![](docs/images/grafana_bgp.png) | ![](docs/images/mattermost.png) | ![](docs/images/opennms.png) |
 
-### 4. Open the ARGUS dashboard
+---
 
-Open `dashboard/index.html` in your browser.
+## Project Structure
 
-## REST API endpoints
+containerlab/        Network topology and configurations  
+automation/          API and diagnostic logic  
+dashboard/           ARGUS interface  
+monitoring/          Monitoring stack (Docker)  
+docs/images/         Project screenshots  
+
+---
+
+## Setup
+
+cd containerlab  
+sudo containerlab deploy -t lab.yml  
+
+cd ../monitoring  
+docker compose up -d  
+
+python3 ../automation/api.py  
+
+Open: dashboard/index.html
+
+---
+
+## API Endpoints
 
 | Method | Endpoint | Description |
-|---|---|---|
-| GET | /api/status | Health check |
-| GET | /api/routers | List all routers |
-| GET | /api/faults | List fault scenarios and recent log |
-| POST | /api/fault/trigger | Trigger a fault |
-| POST | /api/fault/restore | Restore a fault |
-| POST | /api/diagnostic/run | Run diagnostic commands |
-| GET | /api/runbooks | List all runbooks |
+|-------|--------|------------|
+| GET | /api/status | System status |
+| GET | /api/routers | List routers |
+| GET | /api/faults | Fault logs |
+| POST | /api/fault/trigger | Trigger fault |
+| POST | /api/fault/restore | Restore fault |
+| POST | /api/diagnostic/run | Run diagnostics |
 
-## Fault scenarios
+---
 
-| Scenario | Router | SNMP trap |
-|---|---|---|
-| Interface down | router2 | linkDown |
-| BGP neighbourship change | router1 | bgpBackwardTransition |
-| Hardware fault | router3 | linkDown with error description |
-| Route flap | router3 | BGP UPDATE withdrawal |
+## Fault Scenarios
 
-## Services and ports
+- Interface failure  
+- BGP neighbour changes  
+- Hardware faults  
+- Route flapping  
 
-| Service | Port |
-|---|---|
-| ARGUS REST API | 5001 |
-| OpenNMS | 8980 |
-| Mattermost | 8065 |
-| Grafana | 3001 |
-| Prometheus | 9090 |
+---
 
 ## Requirements
 
-- Docker and Docker Compose
-- ContainerLab 0.73+
-- Python 3.12+
-- Arista cEOS image imported as `ceos:latest`
-- Python packages: flask, flask-cors, requests, netmiko
+- Docker & Docker Compose  
+- ContainerLab  
+- Python 3.12+  
+
+Python packages:
+- flask  
+- flask-cors  
+- requests  
+- netmiko  

@@ -1,6 +1,6 @@
 # Automated Network Troubleshooting (ARGUS)
 
-ARGUS is a network automation system that watches your infrastructure around the clock. When something breaks, it automatically figures out what happened, runs the right diagnostics, and delivers a full report to your engineers.
+ARGUS is a network automation system that watches your infrastructure around the clock. When something breaks, it automatically figures out what happened, runs the right diagnostics, and delivers a full report to your engineers — without anyone needing to be on call.
 
 
 
@@ -32,10 +32,10 @@ A fault happens on the network. Within seconds:
 
 The system is built in four layers, each with a clear job:
 
-- **Network layer** -Three virtual Arista cEOS routers running BGP, generating real SNMP traps when faults occur
-- **Monitoring layer** -OpenNMS receives traps, Prometheus collects metrics every 30 seconds
-- **Automation layer** -Python runbook engine polls for alarms and executes diagnostics automatically
-- **Visualisation layer** -ARGUS dashboard and Grafana panels show everything in real time
+- **Network layer** — Three virtual Arista cEOS routers running BGP, generating real SNMP traps when faults occur
+- **Monitoring layer** — OpenNMS receives traps, Prometheus collects metrics every 30 seconds
+- **Automation layer** — Python runbook engine polls for alarms and executes diagnostics automatically
+- **Visualisation layer** — ARGUS dashboard and Grafana panels show everything in real time
 
 ---
 
@@ -124,6 +124,20 @@ The system handles four fault types out of the box:
 - **BGP neighbourship change** — handles a BGP session drop on router1
 - **Hardware fault** — responds to an error-disabled interface on router3
 - **Route flap** — detects route withdrawal instability on router3
+
+---
+
+## Services and Ports
+
+| Service | Port |
+|---|---|
+| ARGUS REST API | 5001 |
+| Runbook engine | 5002 |
+| OpenNMS | 8980 |
+| Mattermost | 8065 |
+| Grafana | 3001 |
+| Prometheus | 9090 |
+| Metrics exporter | 9200 |
 
 ---
 

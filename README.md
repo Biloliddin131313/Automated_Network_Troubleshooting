@@ -80,24 +80,27 @@ docs/images/         Project screenshots
 
 ## Setup
 
-Make sure Docker and ContainerLab are installed, then run:
-
-\`\`\`bash
+Make sure Docker and ContainerLab are installed. Then either run each step manually:
+```bash
+# Deploy the virtual network
 cd containerlab
 sudo containerlab deploy -t lab.yml
+
+# Start the monitoring stack
 cd ../monitoring
 docker compose up -d
+
+# Start the API and exporter
 python3 ../automation/api.py &
 python3 ../automation/exporter.py &
-\`\`\`
+```
 
-Or use the startup script to do everything at once:
-
-\`\`\`bash
+Or use the startup script which does everything automatically:
+```bash
 bash start.sh
-\`\`\`
+```
 
-Then open dashboard/index.html in your browser.
+Then open `dashboard/index.html` in your browser.
 
 ---
 
